@@ -142,9 +142,12 @@ def step5(request: HttpRequest):
 @login_required(login_url='/login')
 def results(request: HttpRequest):
     a = generateSuggestions(request.user)
-    json = generateJson(request.user)
-    return render(request=request, template_name="abcd/finalGraph.html", context={"data": json})
+    a_format = a.map(mapper, a)
+    json = generateJson(request.user) 
+    return render(request=request, template_name="abcd/finalGraph.html", context={"data": json, "suggestion": a_format})
 
+def mapper(sett):
+    return "Association missing between " + sett[0] + " and " + sett[1]
 def home(request: HttpRequest):
     return render(request=request, template_name="abcd/home.html")
 
@@ -182,6 +185,7 @@ def assoc_set(assocs):
         assoc
 
 def generateSuggestions(user):
+
     a = genSets(user.assocs)
     stakeholders = list(Stakeholders.objects.filter(owner=user))
     stake_permu = []
@@ -193,9 +197,12 @@ def generateSuggestions(user):
                 temp.add(stakeholder2.name)
                 if temp not in stake_permu and temp not in a:
                     stake_permu.append(temp)
+    print(stake_permu)
     return stake_permu
 
 def genSets(assocs):
+    if assocs == "":
+        return []
     d = json.loads(assocs)
     output = []
     for a in d:
