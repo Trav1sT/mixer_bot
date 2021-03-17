@@ -111,7 +111,7 @@ class Stakeholders(Node):
             d["loc"] = coord
             return d
 
-class Tags(Node):
+class Strengths(Node):
     details = models.TextField(
         blank=True,
         null=True
@@ -119,10 +119,53 @@ class Tags(Node):
     magnitude = models.SmallIntegerField(
         null=True
     )
+
     def get_dict(self):
         d = dict()
         d["key"] = self.name
         d["color"] = "yellow"
+        if self.x_coord == None:
+            return d
+        else:
+            coord = str(self.x_coord) + " " + str(self.y_coord)
+            d["loc"] = coord
+            return d
+
+
+class Interests(Node):
+    details = models.TextField(
+        blank=True,
+        null=True
+    )
+    magnitude = models.SmallIntegerField(
+        null=True
+    )
+
+    def get_dict(self):
+        d = dict()
+        d["key"] = self.name
+        d["color"] = "turquoise"
+        if self.x_coord == None:
+            return d
+        else:
+            coord = str(self.x_coord) + " " + str(self.y_coord)
+            d["loc"] = coord
+            return d
+
+
+class Qualities(Node):
+    details = models.TextField(
+        blank=True,
+        null=True
+    )
+    magnitude = models.SmallIntegerField(
+        null=True
+    )
+
+    def get_dict(self):
+        d = dict()
+        d["key"] = self.name
+        d["color"] = "cyan"
         if self.x_coord == None:
             return d
         else:
