@@ -176,7 +176,7 @@ class Qualities(Node):
             return d
 
 
-class Tag(Node):
+class Tags(Node):
     details = models.TextField(
         blank=True,
         null=True

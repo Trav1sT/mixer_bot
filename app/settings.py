@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '25ozxy58sz0bs=4btzga8r8i_orj(dca=z8qzmi8_nvtxi%!5%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "enigma-abcd.studio",
@@ -195,5 +195,5 @@ MEDIA_URL = '/maked/static/maked/assets/'
 
 AUTH_USER_MODEL = 'abcd.Profile'
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
