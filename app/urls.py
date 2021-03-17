@@ -26,6 +26,3 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name="social_app/index.html"))
 ]
-
-urlpatterns += staticfiles_urlpatterns()
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
