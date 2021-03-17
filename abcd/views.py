@@ -177,21 +177,22 @@ def save_graph(request: HttpRequest):
     return HttpResponse(json.dumps({}),
                     content_type="application/json")
 
+def assoc_set(assocs):
+    for assoc in assocs:
+        assoc
+
 def generateSuggestions(user):
     a = genSets(user.assocs)
     stakeholders = list(Stakeholders.objects.filter(owner=user))
     stake_permu = []
     for stakeholder in stakeholders:
         for stakeholder2 in stakeholders:
-            print(stakeholder)
             if not stakeholder == stakeholder2 :
                 temp = set()
                 temp.add(stakeholder.name)
                 temp.add(stakeholder2.name)
                 if temp not in stake_permu and temp not in a:
                     stake_permu.append(temp)
-    for i in stake_permu: 
-        print(i)
     return stake_permu
 
 def genSets(assocs):
