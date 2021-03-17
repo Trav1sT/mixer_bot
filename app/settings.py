@@ -198,4 +198,3 @@ AUTH_USER_MODEL = 'abcd.Profile'
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_SSL_REDIRECT = True
 
-mimetypes.add_type("text/css", ".css", True)
