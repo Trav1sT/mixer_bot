@@ -16,6 +16,11 @@ class addCommunityForm(forms.ModelForm):
         model = Community
         fields = ('community_addr',)
 
+class addTagForm(forms.ModelForm):
+    tag_name = forms.CharField(required=False, max_length=200)
+    class Meta:
+        model = Tags
+        fields = ('tag_name',)
 
 class addAssetForm(forms.ModelForm):
     asset_name = forms.CharField(required=False, max_length=500)

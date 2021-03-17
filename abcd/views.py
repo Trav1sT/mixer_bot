@@ -116,7 +116,8 @@ def step5(request: HttpRequest):
         profile.assocs = assocsString
         profile.save()
 
-
+    profile = Profile.objects.get(id=request.user.id)
+    assocsString = profile.assocs or "[]"
     institutions = Institutions.objects.filter(owner=request.user)
     listInsts = []
     for inst in institutions.iterator():
@@ -124,7 +125,8 @@ def step5(request: HttpRequest):
             "name": inst.name,
             "details": inst.details,
             "address": inst.address,
-            "contact": inst.contact
+            "contact": inst.contact,
+            "stakeholders": filterFromConnString(assocsString, inst.name)
         }))
 
     stakeholders = Stakeholders.objects.filter(owner=request.user)
@@ -253,3 +255,16 @@ def appendToStringList(stringList, item):
     if stringList.find(item) >= 0:
         return stringList
     return stringList[:-1] + "," + item + "]"
+
+
+def filterFromConnString(assocs : str, item : str) -> list:
+    # Gets a set of connections from/to the item
+    d = json.loads(assocs)
+    temp = set()
+
+    for a in d:
+        if a["from"] == item:
+            temp.add(a["to"])
+        if a["to"] == item:
+            temp.add(a["from"])
+    return list(temp)
