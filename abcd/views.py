@@ -23,7 +23,6 @@ def step1(request: HttpRequest):
     return render(request=request, template_name="abcd/step1.html",
                 context={"form": form})
 
-
 @login_required(login_url='/login')
 def step2(request: HttpRequest):
 
@@ -32,32 +31,51 @@ def step2(request: HttpRequest):
         dataDict = json.loads(request.body)
         print(dataDict)
         
-        try:
-            strength_name = dataDict["individual_strengths"]
-            for x in strength_name:
-                strength = Strengths(name=x, owner=request.user)
-                strength.save()
-            
-            interests_name = dataDict["individual_interests"]
-            for x in interests_name:
-                interest = Interests(name=x, owner=request.user)
-                interest.save()
-            
-            qualities_name = dataDict["individual_qualities"]
-            for x in qualities_name:
-                quality = Qualities(name=x, owner=request.user)
-                quality.save()
-                
-            name = dataDict["name"]
-            stake = Stakeholders(name=name, owner=request.user)
-            stake.save()
-        except Exception as e:
-            err = str(e)
+        stake_name = dataDict["name"]
+        stake = Stakeholders(name=stake_name, owner=request.user)
+        stake.save()
+
+        profile = Profile.objects.get(id=request.user.id)
+        assocsString = profile.assocs
+        if not assocsString:
+            assocsString = "[]"
+
+        strength_name = dataDict["strengths"]
+        for x in strength_name:
+            strength = Strengths(name=x, owner=request.user)
+            strength.save()
+            assocsString = appendToStringList(
+                assocsString, 
+                createConnString(stake_name, x)
+            )
         
+        interests_name = dataDict["interests"]
+        for x in interests_name:
+            interest = Interests(name=x, owner=request.user)
+            interest.save()
+            assocsString = appendToStringList(
+                assocsString, 
+                createConnString(stake_name, x)
+            )
+        
+        qualities_name = dataDict["qualities"]
+        for x in qualities_name:
+            quality = Qualities(name=x, owner=request.user)
+            quality.save()
+            assocsString = appendToStringList(
+                assocsString, 
+                createConnString(stake_name, x)
+            )
+        
+        profile.assocs = assocsString
+        profile.save()
+
+        print("Success")
+        print(assocsString)
+
     stakeholders = Stakeholders.objects.filter(owner=request.user)
-    print(err)
     return render(request=request, template_name="abcd/step2.html",
-                  context={"individuals": stakeholders, "error": err})
+                  context={"individuals": stakeholders})
 
 
 
