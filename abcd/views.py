@@ -142,7 +142,6 @@ def step5(request: HttpRequest):
 @login_required(login_url='/login')
 def results(request: HttpRequest):
     a = generateSuggestions(request.user)
-    print(a)
     json = generateJson(request.user)
     return render(request=request, template_name="abcd/finalGraph.html", context={"data": json})
 
@@ -180,17 +179,19 @@ def save_graph(request: HttpRequest):
 
 def generateSuggestions(user):
     a = genSets(user.assocs)
-    print(a)
-    stakeholders = Stakeholders.objects.filter(owner=user)
+    stakeholders = list(Stakeholders.objects.filter(owner=user))
     stake_permu = []
     for stakeholder in stakeholders:
         for stakeholder2 in stakeholders:
+            print(stakeholder)
             if not stakeholder == stakeholder2 :
                 temp = set()
-                temp.add(stakeholder)
-                temp.add(stakeholder2)
-                if temp not in stake_permu and temp not in genSets:
+                temp.add(stakeholder.name)
+                temp.add(stakeholder2.name)
+                if temp not in stake_permu and temp not in a:
                     stake_permu.append(temp)
+    for i in stake_permu: 
+        print(i)
     return stake_permu
 
 def genSets(assocs):
@@ -216,7 +217,6 @@ def generateJson(user):
     assocs = []
     if (not user.assocs == ""):
         data = json.loads(user.assocs)
-        print(data)
         assocs = data
     d = dict()
     d["class"] = "GraphLinksModel"

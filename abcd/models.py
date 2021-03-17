@@ -110,6 +110,8 @@ class Stakeholders(Node):
             coord = str(self.x_coord) + " " + str(self.y_coord)
             d["loc"] = coord
             return d
+    def __str__(self):
+        return self.name
 
 class Tags(Node):
     details = models.TextField(

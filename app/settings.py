@@ -26,7 +26,8 @@ SECRET_KEY = '25ozxy58sz0bs=4btzga8r8i_orj(dca=z8qzmi8_nvtxi%!5%'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "http://www.maked.studio/",
+    "enigma-abcd.studio",
+    "www.enigma-abcd.studio",
     "127.0.0.1:8000",
     "127.0.0.1"
 ]

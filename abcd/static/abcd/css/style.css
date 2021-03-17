@@ -4,6 +4,11 @@ body {
   visibility: hidden;
 }
 
+.canvas {
+  height: 500px;
+  width: 500px;
+}
+
 #frame-box {
   border-color: black!important;
   border-radius: 8px!important;
