@@ -176,7 +176,9 @@ small {
       sortableElement.attr("data", index);
       sortableElement.addClass("list-group");
       sortableElement.addClass("sortable");
-  
+      institution["stakeholders"].forEach(x => {
+        sortableElement.append($(`#stakeholders-${stakeholders.findIndex(u => u["name"]===x)}`).clone());
+      });
       sortableElement.sortable({
         revert: true,
         placeholder: "placeholder"
