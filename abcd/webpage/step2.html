@@ -1,166 +1,60 @@
-{% extends "abcd/stepbase.html" %}
-
-{% block header_files %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script></script>
+    <link rel="stylesheet" href="{% static 'abcd/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'abcd/css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap" rel="stylesheet"> 
 <style>
-  body {
+body {
     background-color: #4EE4C3;
-    /* background-image: url('../../static/abcd/img/step2.svg'); */
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: bottom;  
-    background-size: 80vw auto;
+}
+
+h1 {
+    font-family: 'rubik';
+    text-align: center;
+}
+
+div{
+    text-align: center;  
+}
+.text-input {
+  background: transparent;
+border: 0;
+  border-bottom: 2px solid black;
+  font-size: 20px;
+  height: 50px;
+  outline: none !important;
+  width: 500px;
+  padding-bottom: 4px;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+    }
+
+.screen2 {
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  padding-top: 200px;
   }
-  .tags {
-    margin-right: 1em;
-    color: tomato;
-  }
+  
+
 </style>
-{% endblock %}
-
-{% block content %}
-<div class="col">
-  <div class="row">
-    <h1>Who are the individuals?</h1>
-  </div>
-  <div class="row">
-  <div class="container">
-    
-    <form method="post" id="addIndividualForm" onsubmit = "return true;">
-    <div class="form-group">
-    {% csrf_token %}
-      <label>Stakeholder's name</label>
-      <input type="text" class="form-control" name="individual_name" placeholder="Enter stakeholder's name">
+</head>
+<body>
+    <h1>The lovely people involved are..</h1>
+    <div>
+        <input class="text-input" type="text" placeholder=" ">
     </div>
-    <div class="form-group">
-      <label class="d-block">Strengths</label>
-      <div class="d-flex" id="s">
-      <input type="text" class="form-control" name="individual_strengths" placeholder="Enter strengths">
-      <button type="button" class="btn btn-secondary" value=add_strengths>Add</button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="d-block">Interests</label>
-      <div class="d-flex" id="i">
-        <input type="text" class="form-control" name="individual_interests" placeholder="Enter interests">
-        <button type="button" class="btn btn-secondary" value=add_interests>Add</button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="d-block">Qualities</label>
-      <div class="d-flex" id="q">
-        <input type="text" class="form-control" name="individual_qualities" placeholder="Enter qualities">
-       <button type="button" class="btn btn-secondary" value=add_qualities>Add</button>
-      </div>
-    </div>
-    <p>{{ error }}</p>
-    <button class="btn btn-primary" type="button" value=add>Add Stakeholder</button>
-    </form>
-    <div class="row d-block mt-3">
-      <div class="container">
-        <h2>Stakeholders</h2>
-        <ul class="list-group">
-        {% for x in individuals %}
-          <li class="list-group-item">
-            <p class="font-weight-bold">{{asset.name}}</p>
-            <p>{{x.name}}</p>
-            <p>{{x.strengths}}</p>
-            <p>{{x.interests}}</p>
-            <p>{{x.qualities}}</p>
-          </li>
-        {% endfor %}
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
 
-{% endblock %}
+    <img class='screen2' src="../static/abcd/sc2.svg" alt="1bg">
 
-{% block js %}
-<script>
-
-  const strengths = [];
-  const qualities = [];
-  const interests = [];
-
-  $('button[value="add_strengths"]').click(() => addStrengths());
-  $('button[value="add_qualities"]').click(() => addQualities());
-  $('button[value="add_interests"]').click(() => addInterests());
-  $('button[value="add"]').click(() => fetchMe());
-
-  $('input[name="individual_strengths"]').keypress(function (e) {
-    var key = e.which;
-    if(key == 13)  // the enter key code
-      {
-        $('button[value="add_strengths"]').click();
-        return false;  
-      }
-  });
-  $('input[name="individual_qualities"]').keypress(function (e) {
-    var key = e.which;
-    if(key == 13)  // the enter key code
-      {
-        $('button[value="add_qualities"]').click();
-        return false;  
-      }
-  });   
-  $('input[name="individual_interests"]').keypress(function (e) {
-    var key = e.which;
-    if(key == 13)  // the enter key code
-      {
-        $('button[value="add_interests"]').click();
-        return false;  
-      }
-  });   
-
-  function addStrengths() {
-    const s = $('input[name="individual_strengths"]');
-    const t = s.val().trim();
-    strengths.push(t);
-    $("#s").before($("<small>").text(t).addClass("tags"));
-    s.val("");
-  }
-
-  function addQualities() {
-    const s = $('input[name="individual_qualities"]');
-    const t = s.val().trim();
-    qualities.push(s.val().trim());
-    $("#q").before($("<small>").text(s.val()).addClass("tags"));
-    s.val("");
-  }
-
-  function addInterests() {
-    const s = $('input[name="individual_interests"]');
-    const t = s.val().trim();
-    interests.push(t);
-    $("#i").before($("<small>").text(t).addClass("tags"));
-    s.val("");
-  }
-
-  function fetchMe() {
-    const data = {
-      name: $('input[name="individual_name"]').val(),
-      strength: strengths,
-      qualities: qualities,
-      interests: interests,
-    };
-    console.log(data);
-    const request = new Request(
-      "/individuals/",
-      {headers: {'X-CSRFToken': csrftoken}}
-    );
-    fetch(request, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      mode: 'same-origin'
-    });
-  }
-
-
-  $('<img/>').attr('src', "../../static/abcd/img/step2.svg").on('load', function() {
-   $(this).remove(); // prevent memory leaks as @benweet suggested
-   $('body').css('background-image', 'url("../../static/abcd/img/step2.svg")');
-});
-</script>
-{% endblock %}
+</body>
+</html>
