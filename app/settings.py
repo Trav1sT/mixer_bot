@@ -13,6 +13,9 @@ import os
 import mimetypes
 
 
+import django_heroku
+import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '25ozxy58sz0bs=4btzga8r8i_orj(dca=z8qzmi8_nvtxi%!5%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "enigma-abcd.studio",
@@ -58,7 +61,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2'
 )
 
-SITE_ID = 2
+SITE_ID = 3
 
 LOGIN_REDIRECT_URL = "/"
 
@@ -120,31 +123,14 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# }
 DATABASES = {
-    'default': {
+    'default': dj_database_url.config(conn_max_age=600),
+    'localhost': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-# DATABASES = {
-
-#     'default': {
-
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-#         'NAME': 'postgres',
-
-#         'USER': 'postgres',
-
-#         'PASSWORD': '',
-
-#         'HOST': '127.0.0.1',
-
-#         'PORT': '5432',
-
-#     }
-
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -192,5 +178,5 @@ STATICFILES_DIRS = (
 
 AUTH_USER_MODEL = 'abcd.Profile'
 
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
