@@ -190,8 +190,6 @@ STATICFILES_DIRS = (
 )
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'maked/static/maked/assets/images')
-MEDIA_URL = '/maked/static/maked/assets/'
 
 AUTH_USER_MODEL = 'abcd.Profile'
 
