@@ -83,7 +83,6 @@ class Profile(AbstractBaseUser, PermissionsMixin):
 class Node(models.Model):
     name = models.TextField(
         blank=False,
-        unique=True
     )
     #Many-to-one user
     owner = models.ForeignKey(
@@ -100,6 +99,8 @@ class Node(models.Model):
     )
     def get_name(self):
         return self.name
+    class Meta:
+        unique_together = ('name', 'owner',)
 
 class Stakeholders(Node):
     def get_dict(self):

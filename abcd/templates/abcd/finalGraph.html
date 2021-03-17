@@ -8,16 +8,21 @@
     <div id="myDiagramDiv" class="canvas"></div>
   </div>
   <div class="float-left p-1" style="width: 40%;">
-    Suggestion list
+    Suggestions for links between stakeholders
     <div class="suggestion-list">
+      {% if suggestions %}
       {% for suggestion in suggestions %}
         <div class="suggestion-item m-3 p-1">
           {{suggestion}}
         </div>
       {% endfor %}
+      {% else %}
+        <div class="suggestion-item m-3 p-1">
+          Congratulations there are no missing links between stakeholders!
+        </div>
+      {% endif %}
     </div>
   </div>
-
 </div>
 <div id="storage" value="{{data}}"></div>
 <script>

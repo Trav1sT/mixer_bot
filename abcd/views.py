@@ -144,12 +144,13 @@ def step5(request: HttpRequest):
 @login_required(login_url='/login')
 def results(request: HttpRequest):
     a = generateSuggestions(request.user)
-    a_format = map(mapper, a)
-    json = generateJson(request.user) 
-    return render(request=request, template_name="abcd/finalGraph.html", context={"data": json, "suggestion": a_format})
+    a_format = list(map(mapper, a))
+    json = generateJson(request.user)
+    print(a_format)
+    return render(request=request, template_name="abcd/finalGraph.html", context={"data": json, "suggestions": a_format})
 
 def mapper(sett):
-    return "Association missing between " + sett[0] + " and " + sett[1]
+    return "Association missing between " + list(sett)[0] + " and " + list(sett)[1]
 def home(request: HttpRequest):
     return render(request=request, template_name="abcd/home.html")
 
