@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '25ozxy58sz0bs=4btzga8r8i_orj(dca=z8qzmi8_nvtxi%!5%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "enigma-abcd.studio",
@@ -64,7 +64,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2'
 )
 
-SITE_ID = 1
+SITE_ID = 3
 
 LOGIN_REDIRECT_URL = "/"
 
@@ -181,6 +181,6 @@ STATICFILES_DIRS = (
 
 AUTH_USER_MODEL = 'abcd.Profile'
 
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 
