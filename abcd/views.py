@@ -142,7 +142,7 @@ def step5(request: HttpRequest):
 @login_required(login_url='/login')
 def results(request: HttpRequest):
     a = generateSuggestions(request.user)
-    a_format = a.map(mapper, a)
+    a_format = map(mapper, a)
     json = generateJson(request.user) 
     return render(request=request, template_name="abcd/finalGraph.html", context={"data": json, "suggestion": a_format})
 
@@ -155,8 +155,13 @@ def home(request: HttpRequest):
 def save_graph(request: HttpRequest):
     data = json.loads(request.POST.get('data', ''))
     d = json.loads(data)
-    print(d)
     nodes = d['nodeDataArray']
+    nodes_name = list(map(lambda obj: obj['key'], nodes))
+    db_nodes = Node.objects.filter(owner=request.user)
+    for db_node in db_nodes:
+        if db_node.name not in nodes_name:
+            db_node.delete()
+
     for node in nodes:
         color = node['color']
         x_y = node['loc'].split()
@@ -185,7 +190,6 @@ def assoc_set(assocs):
         assoc
 
 def generateSuggestions(user):
-
     a = genSets(user.assocs)
     stakeholders = list(Stakeholders.objects.filter(owner=user))
     stake_permu = []

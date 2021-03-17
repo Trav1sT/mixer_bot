@@ -98,6 +98,8 @@ class Node(models.Model):
     y_coord = models.FloatField(
         null=True
     )
+    def get_name(self):
+        return self.name
 
 class Stakeholders(Node):
     def get_dict(self):
