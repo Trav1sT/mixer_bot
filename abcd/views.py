@@ -26,31 +26,39 @@ def step1(request: HttpRequest):
 
 @login_required(login_url='/login')
 def step2(request: HttpRequest):
-    form = addIndividualForm(request.POST or None)
-    form2 = addTagForm(request.POST or None)
-    tags= []
-    stakeholders = []
-    stakeholders.extend(Stakeholders.objects.filter(owner=request.user))
-    tags.extend(Tags.objects.filter(owner=request.user))
-    print(len(stakeholders))
-    print(len(tags))
+
+    err = ""
     if request.method == "POST":
-        if 'tag_name' in request.POST:
-            if not form2.is_valid():
-                print("invalid")
-            else:
-                name = form2.cleaned_data['tag_name']
-                temp = Tags(name=name, owner=request.user)
-                temp.save()
-        else:
-            if not form.is_valid():
-                print("invalid")
-            else:
-                name = form.cleaned_data['individual_name']
-                temp = Stakeholders(name=name, owner=request.user)
-                temp.save()
+        dataDict = json.loads(request.body)
+        print(dataDict)
+        
+        try:
+            strength_name = dataDict["individual_strengths"]
+            for x in strength_name:
+                strength = Strengths(name=x, owner=request.user)
+                strength.save()
+            
+            interests_name = dataDict["individual_interests"]
+            for x in interests_name:
+                interest = Interests(name=x, owner=request.user)
+                interest.save()
+            
+            qualities_name = dataDict["individual_qualities"]
+            for x in qualities_name:
+                quality = Qualities(name=x, owner=request.user)
+                quality.save()
+                
+            name = dataDict["name"]
+            stake = Stakeholders(name=name, owner=request.user)
+            stake.save()
+        except Exception as e:
+            err = str(e)
+        
+    stakeholders = Stakeholders.objects.filter(owner=request.user)
+    print(err)
     return render(request=request, template_name="abcd/step2.html",
-                  context={"form": form, "form2":form2, "tags": tags, "individuals": stakeholders})
+                  context={"individuals": stakeholders, "error": err})
+
 
 
 @login_required(login_url='/login')
