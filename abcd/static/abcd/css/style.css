@@ -5,8 +5,39 @@ body {
 }
 
 .canvas {
-  height: 500px;
-  width: 500px;
+  
+  height: 56vh;
+  width: 100%;
+}
+
+.first-half {
+  position: relative;
+}
+.saveGraph {
+  position: absolute;
+  z-index: 9;
+  top: 12px;
+  width: 180px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.wrapper-box {
+  height: 60vh;
+}
+.float-left {
+  height: auto;
+  float: left;
+}
+.suggestion-list {
+  border-color: black;
+  overflow-y: auto;
+  height: 54vh;
+}
+.suggestion-item {
+  background-color: antiquewhite;
+  border-radius: 4px;
+  word-wrap: break-word;
 }
 
 #frame-box {
@@ -32,10 +63,7 @@ body {
   border-color: tomato!important;
 }
 
-.saveGraph {
-  z-index: 9;
-  top: 500px;
-}
+
 
 @media screen and (min-width: 800px){
     .pagination-btn {

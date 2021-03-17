@@ -152,9 +152,13 @@ def step5(request: HttpRequest):
 @login_required(login_url='/login')
 def results(request: HttpRequest):
     a = generateSuggestions(request.user)
+    a_format = list(map(mapper, a))
     json = generateJson(request.user)
-    return render(request=request, template_name="abcd/finalGraph.html", context={"data": json})
+    print(a_format)
+    return render(request=request, template_name="abcd/finalGraph.html", context={"data": json, "suggestions": a_format})
 
+def mapper(sett):
+    return "Association missing between " + list(sett)[0] + " and " + list(sett)[1]
 def home(request: HttpRequest):
     return render(request=request, template_name="abcd/home.html")
 
@@ -162,8 +166,13 @@ def home(request: HttpRequest):
 def save_graph(request: HttpRequest):
     data = json.loads(request.POST.get('data', ''))
     d = json.loads(data)
-    print(d)
     nodes = d['nodeDataArray']
+    nodes_name = list(map(lambda obj: obj['key'], nodes))
+    db_nodes = Node.objects.filter(owner=request.user)
+    for db_node in db_nodes:
+        if db_node.name not in nodes_name:
+            db_node.delete()
+
     for node in nodes:
         color = node['color']
         x_y = node['loc'].split()
@@ -203,9 +212,12 @@ def generateSuggestions(user):
                 temp.add(stakeholder2.name)
                 if temp not in stake_permu and temp not in a:
                     stake_permu.append(temp)
+    print(stake_permu)
     return stake_permu
 
 def genSets(assocs):
+    if assocs == "":
+        return []
     d = json.loads(assocs)
     output = []
     for a in d:

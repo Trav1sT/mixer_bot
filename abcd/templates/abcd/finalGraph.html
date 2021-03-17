@@ -2,8 +2,28 @@
 
 {% block content %}
 <h1>Here's your connection graph</h1>
-<button class="saveGraph" onclick="saveGraph()">Save graph</button>
-<div id="myDiagramDiv" class="canvas"></div>
+<div class="wrapper-box">
+  <div class="float-left first-half" style="width: 60%;">
+    <button class="saveGraph" onclick="saveGraph()">Save graph</button>
+    <div id="myDiagramDiv" class="canvas"></div>
+  </div>
+  <div class="float-left p-1" style="width: 40%;">
+    Suggestions for links between stakeholders
+    <div class="suggestion-list">
+      {% if suggestions %}
+      {% for suggestion in suggestions %}
+        <div class="suggestion-item m-3 p-1">
+          {{suggestion}}
+        </div>
+      {% endfor %}
+      {% else %}
+        <div class="suggestion-item m-3 p-1">
+          Congratulations there are no missing links between stakeholders!
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
 <div id="storage" value="{{data}}"></div>
 <script>
       // source: https://github.com/NorthwoodsSoftware/GoJS/blob/master/samples/linksToLinks.html
