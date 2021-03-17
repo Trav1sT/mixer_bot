@@ -10,7 +10,10 @@
     background-position: bottom;  
     background-size: 80vw auto;
   }
-  
+  .tags {
+    margin-right: 1em;
+    color: tomato;
+  }
 </style>
 {% endblock %}
 
@@ -30,33 +33,44 @@
     </div>
     <div class="form-group">
       <label class="d-block">Strengths</label>
-      <div class="d-flex">
+      <div class="d-flex" id="s">
       <input type="text" class="form-control" name="individual_strengths" placeholder="Enter strengths">
-      <button class="btn btn-secondary" value=add>Add</button>
+      <button type="button" class="btn btn-secondary" value=add_strengths>Add</button>
       </div>
     </div>
     <div class="form-group">
       <label class="d-block">Interests</label>
-      <div class="d-flex">
+      <div class="d-flex" id="i">
         <input type="text" class="form-control" name="individual_interests" placeholder="Enter interests">
-        <button class="btn btn-secondary" value=add>Add</button>
+        <button type="button" class="btn btn-secondary" value=add_interests>Add</button>
       </div>
     </div>
     <div class="form-group">
       <label class="d-block">Qualities</label>
-      <div class="d-flex">
+      <div class="d-flex" id="q">
         <input type="text" class="form-control" name="individual_qualities" placeholder="Enter qualities">
-       <button class="btn btn-secondary" value=add>Add</button>
+       <button type="button" class="btn btn-secondary" value=add_qualities>Add</button>
       </div>
     </div>
-    <button class="btn btn-primary" type="submit" value=add>Add Stakeholder</button>
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" type="button" value=add>Add Stakeholder</button>
     </form>
-    <!-- <form action="" method="POST" >
-    {% csrf_token %}
-    {{ form2.as_p }}
-    <button name="htmlsubmitbutton2" class="btn">Add</button>
-    </form> -->
-  
+    <div class="row d-block mt-3">
+      <div class="container">
+        <h2>Stakeholders</h2>
+        <ul class="list-group">
+        {% for x in individuals %}
+          <li class="list-group-item">
+            <p class="font-weight-bold">{{asset.name}}</p>
+            <p>{{x.name}}</p>
+            <p>{{x.strengths}}</p>
+            <p>{{x.interests}}</p>
+            <p>{{x.qualities}}</p>
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 </div>
@@ -65,6 +79,85 @@
 
 {% block js %}
 <script>
+
+  const strengths = [];
+  const qualities = [];
+  const interests = [];
+
+  $('button[value="add_strengths"]').click(() => addStrengths());
+  $('button[value="add_qualities"]').click(() => addQualities());
+  $('button[value="add_interests"]').click(() => addInterests());
+  $('button[value="add"]').click(() => fetchMe());
+
+  $('input[name="individual_strengths"]').keypress(function (e) {
+    var key = e.which;
+    if(key == 13)  // the enter key code
+      {
+        $('button[value="add_strengths"]').click();
+        return false;  
+      }
+  });
+  $('input[name="individual_qualities"]').keypress(function (e) {
+    var key = e.which;
+    if(key == 13)  // the enter key code
+      {
+        $('button[value="add_qualities"]').click();
+        return false;  
+      }
+  });   
+  $('input[name="individual_interests"]').keypress(function (e) {
+    var key = e.which;
+    if(key == 13)  // the enter key code
+      {
+        $('button[value="add_interests"]').click();
+        return false;  
+      }
+  });   
+
+  function addStrengths() {
+    const s = $('input[name="individual_strengths"]');
+    const t = s.val().trim();
+    strengths.push(t);
+    $("#s").before($("<small>").text(t).addClass("tags"));
+    s.val("");
+  }
+
+  function addQualities() {
+    const s = $('input[name="individual_qualities"]');
+    const t = s.val().trim();
+    qualities.push(s.val().trim());
+    $("#q").before($("<small>").text(s.val()).addClass("tags"));
+    s.val("");
+  }
+
+  function addInterests() {
+    const s = $('input[name="individual_interests"]');
+    const t = s.val().trim();
+    interests.push(t);
+    $("#i").before($("<small>").text(t).addClass("tags"));
+    s.val("");
+  }
+
+  function fetchMe() {
+    const data = {
+      name: $('input[name="individual_name"]').val(),
+      strength: strengths,
+      qualities: qualities,
+      interests: interests,
+    };
+    console.log(data);
+    const request = new Request(
+      "/individuals/",
+      {headers: {'X-CSRFToken': csrftoken}}
+    );
+    fetch(request, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      mode: 'same-origin'
+    });
+  }
+
+
   $('<img/>').attr('src', "../../static/abcd/img/step2.svg").on('load', function() {
    $(this).remove(); // prevent memory leaks as @benweet suggested
    $('body').css('background-image', 'url("../../static/abcd/img/step2.svg")');
