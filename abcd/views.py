@@ -175,6 +175,17 @@ def save_graph(request: HttpRequest):
     return HttpResponse(json.dumps({}),
                     content_type="application/json")
 
+def generateSuggestions(user):
+    assocs = json.loads(user.assocs)
+    stakeholders = Stakeholders.objects.filter(owner=user)
+    stake_permu = []
+    for stakeholder in stakeholders:
+        temp = []
+        for stakeholder2 in stakeholders:
+            if not stakeholder == stakeholder2:
+                return None
+    return None
+
 
 #supporting function
 def generateJson(user):

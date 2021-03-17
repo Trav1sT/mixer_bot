@@ -24,6 +24,11 @@ body {
   background-color:#FFD214;
 }
 
+.saveGraph {
+  z-index: 9;
+  top: 500px;
+}
+
 @media screen and (min-width: 800px){
     .pagination-btn {
       border-width: 2px;
